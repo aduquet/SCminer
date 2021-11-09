@@ -68,7 +68,9 @@ class CSminerPY(object):
                     aux.append(i)
         num = []
         if len(aux) == 1:
-            return 1
+            a = aux[0].replace(' ', '')
+            a = a[a.index('(') + 1 : a.index(')') ].split(',')
+            return len(a)
 
         else:
             

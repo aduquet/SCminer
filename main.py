@@ -61,8 +61,9 @@ if __name__ == '__main__':
             data = oneFile(input_file)
             sloc = CSminerGenericMetrics(data).sloc()
             sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
-            sloc_statements =CSminerGenericMetrics(data).sloc_statements() 
-            print(sloc, sloc_wbl, sloc_statements)
+            sloc_statements = CSminerGenericMetrics(data).sloc_statements()
+            numArg = CSminerPY(data).numArg()
+            print(sloc, sloc_wbl, sloc_statements, numArg)
 
         elif nf == 'd':
             multipleFiles(input_file)

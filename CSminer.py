@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import string
 
@@ -35,27 +36,72 @@ class CSminer_openFile(object):
 class CSminerGenericMetrics(object):
     def __init__(self, data):
         self.data = data
-    
+
     def sloc(self):
-        return len(self.data.split('\n'))
+        return len(CSmineOthers(self.data).dataSplit())
     
     def sloc_wbl(self):
-        aux = self.data.split('\n')
-        aux1 = []
-        for i in aux:
-            aux1.append( i.replace(' ', ''))
-        aux2 = []
-        for i in aux1:
-            if i != '':
-                aux2.append(i)
-        return len(aux2)
+        aux = CSmineOthers(self.data).dataSplit()
+        aux = CSmineOthers(aux).removeSpace()
+        return len(CSmineOthers(aux).removeBlankLines())
     
     def sloc_statements(self):
-        data = self.data.split('\n')
+        data = CSmineOthers(self.data).dataSplit()
         aux= []
         for i in data:
             a = i.replace(' ', '')
             if a not in string.punctuation:
                 aux.append(a)
         return(len(aux))
+    
+class CSminerPY(object):
+    def __init__(self, data):
+        self.data = data
+
+    def numArg(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        aux = []
+        for i in data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find('def ') != -1:
+                    aux.append(i)
+        num = []
+        if len(aux) == 1:
+            return 1
+
+        else:
+            
+            for i in aux:
+                a = i.replace(' ', '')
+                a = a[a.index('(') + 1 : a.index(')') ].split(',')
+                num.append(len(a))
+            
+            return num
+                
+
+class CSmineOthers(object):
+
+    def __init__(self, data):
+        self.data = data
+    
+    def dataSplit(self):
+        return self.data.split('\n')
+    
+    def removeBlankLines(self):
+        aux = []
+        for i in self.data:
+            if i != '':
+                aux.append(i)
+        return aux
+    
+    def removeSpace(self):
+        aux = []
+        for i in self.data:
+            aux.append(re.sub(' +', '', i))
+        return aux
+    
+    def onlySpaces(self):
+        return self.data.isspace()
+
 

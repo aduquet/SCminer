@@ -3,8 +3,15 @@ import re
 import sys
 import ast
 import string
+from typing import Counter
 
 from networkx.classes.function import is_empty
+
+class keyWords():
+    loops = ['for ', 'while ', 'do ', 'if']
+    op = ['and', 'or', 'xor']
+    aritmeticOperator = ['+', '-', '*', '/', '%', '++', '--', '+=', '-=', '*=', '/=', '%=','**']
+    comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
    
 class CSminer_openFile(object):
     def __init__(self, filePath):
@@ -83,6 +90,33 @@ class CSminerJAVA(object):
                     aux.append(i)
         return CSmineOthers(aux).argFinder()
 
+class CSminerCplus(object):
+    def __init__(self, data):
+        self.data = data
+
+    def numArg(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        aux = []
+        aux2 = []
+        aux3 = []
+
+        for i in data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find(';') == -1:
+                    aux.append(i)
+        loops, pos = CSmineOthers(aux).Loops()
+        
+        for i in range(0, len(aux)):
+            if i not in pos:
+                aux2.append(aux[i])
+   
+        for i in aux2:
+            a = i.replace(' ', '')
+            if a not in string.punctuation:
+                aux3.append(a)
+        return CSmineOthers(aux3).argFinder()
+
 class CSmineOthers(object):
 
     def __init__(self, data):
@@ -108,16 +142,45 @@ class CSmineOthers(object):
         return self.data.isspace()
     
     def argFinder(self):
-        num = []
-        if len(self.data) == 1:
-            a = self.data[0].replace(' ', '')
-            a = a[a.index('(') + 1 : a.index(')') ].split(',')
-            return len(a)
-
-        else:
-            for i in self.data:
-                a = i.replace(' ', '')
+        #print(self.data)
+        try:
+            num = []
+            if len(self.data) == 1:
+                a = self.data[0].replace(' ', '')
                 a = a[a.index('(') + 1 : a.index(')') ].split(',')
-                num.append(len(a))
-            return num
+                return len(a)
+
+            else:
+                for i in self.data:
+                    a = i.replace(' ', '')
+                    a = a[a.index('(') + 1 : a.index(')') ].split(',')
+                    num.append(len(a))
+                return num
+        except:
+
+            num = []
+            for i in self.data:
+                if i.find('(') != -1:
+                    a = i[i.index('(') + 1 : i.index(')') ].split(',')
+                    num.append(a)
+            num2= []
+            for i in num:
+                if len(num) == 1:
+                    return len(i)
+                else:
+                    num2.append(len(i))
+            return num2
+
+
+    def Loops(self):
+        loopsName = []
+        pos = []
+        for i in keyWords.loops:
+            counter = 0
+            for j in self.data:
+                if i in j != -1:
+                    loopsName.append(i)
+                    pos.append(counter)
+                counter += 1
+        return loopsName, pos
 

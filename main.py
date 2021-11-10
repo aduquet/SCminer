@@ -56,8 +56,8 @@ def getMetrics(input_file, data):
         print(sloc, sloc_wbl, sloc_statements_wc, numArg, numLoops)
     
     elif CSminer_openFile(input_file).extFile() == 'java':
-        numArg = CSminerJAVA(data).numArg()
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, numLoops)
+        argDT, numArg = CSminerJAVA(data).numArg_argDT()
+        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops)
     
     else:
         numArg = CSminerCplus(data).numArg()

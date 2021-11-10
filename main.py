@@ -61,7 +61,7 @@ def getMetrics(input_file, data):
     
     else:
         argDT, numArg = CSminerCplus(data).numArg_argDT()
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, numLoops)
+        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops)
 
 
 if __name__ == '__main__':

@@ -13,6 +13,8 @@ class keyWords():
     aritmeticOperator = ['+', '-', '*', '/', '%', '++', '--', '+=', '-=', '*=', '/=', '%=','**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
+    dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'integer ', 'float ']
+
 class CSminer_openFile(object):
     def __init__(self, filePath):
         self.filePath = filePath
@@ -87,7 +89,7 @@ class CSminerJAVA(object):
     def __init__(self, data):
         self.data = data
 
-    def numArg(self):
+    def numArg_argDT(self):
         data = CSmineOthers(self.data).dataSplit()
         data = CSmineOthers(data).removeBlankLines()
         aux = []
@@ -95,7 +97,38 @@ class CSminerJAVA(object):
             if not CSmineOthers(i).onlySpaces():
                 if i.find('public static ') != -1:
                     aux.append(i)
-        return CSmineOthers(aux).argFinder()
+
+        a, len_a = CSmineOthers(aux).argFinder()
+        argDT = []
+        try:
+            for i in a:
+                var = i.lower()
+                if '[]' in var:
+                    for j in keyWords.dataType:
+                        j = j.replace(' ', '')
+                        if j in var:
+                            argDT.append('array_' + j)
+                else:
+                    for j in keyWords.dataType:
+                        if j in var:
+                            argDT.append(j)   
+            return argDT, len_a
+
+        except:
+            for k in a:
+                for i in k:
+                    var = i.lower()
+                    if '[]' in var:
+                        for j in keyWords.dataType:
+                            j = j.replace(' ', '')
+                            if j in var:
+                                argDT.append('array_' + j)
+                    else:
+                        for j in keyWords.dataType:
+                            if j in var:
+                                argDT.append(j)
+            return argDT, len_a 
+
 
 class CSminerCplus(object):
     def __init__(self, data):
@@ -153,16 +186,17 @@ class CSmineOthers(object):
         try:
             num = []
             if len(self.data) == 1:
-                a = self.data[0].replace(' ', '')
+                a = self.data[0]
                 a = a[a.index('(') + 1 : a.index(')') ].split(',')
-                return len(a)
+                return a, len(a)
 
             else:
+                num2 =[]
                 for i in self.data:
-                    a = i.replace(' ', '')
-                    a = a[a.index('(') + 1 : a.index(')') ].split(',')
-                    num.append(len(a))
-                return num
+                    a = i[i.index('(') + 1 : i.index(')') ].split(',')
+                    num.append(a)
+                    num2.append(len(a))
+                return num, num2
         except:
 
             num = []

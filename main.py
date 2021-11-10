@@ -1,6 +1,5 @@
 import os
 from CSminer import *
-import nltk
 import pickle
 import pathlib
 import warnings
@@ -46,25 +45,39 @@ def multipleFiles(input_file):
         except OSError:
             print('The file ' '"', input, '" does not exist!')
 
+def getMetrics(input_file, data):
+
+    sloc = CSminerGenericMetrics(data).sloc()
+    sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
+    sloc_statements = CSminerGenericMetrics(data).sloc_statements()
+
+    if CSminer_openFile(input_file).extFile() == 'py':
+        numArg = CSminerPY(data).numArg()
+        print(sloc, sloc_wbl, sloc_statements, numArg)
+    
+    elif CSminer_openFile(input_file).extFile() == 'java':
+        numArg = CSminerJAVA(data).numArg()
+        print(sloc, sloc_wbl, sloc_statements, numArg)
+    
+    else:
+        numArg = CSminerCplus(data).numArg()
+        print(sloc, sloc_wbl, sloc_statements, numArg)
+
 
 if __name__ == '__main__':
     import click
 
     @click.command()
     @click.option('-i', '--input', 'input_file', help = 'Path to the file')
-    @click.option('-f', '--numbFiles', 'nf', help= 'One file or multple files/directory options are "f" for one file and "d" for directoy')
+    @click.option('-nf', '--numbFiles', 'nf', help= 'One file or multple files/directory options are "f" for one file and "d" for directoy')
     @click.option('-o', '--output', 'output_file', help = 'Output file Name')
 
     def main(input_file, nf, output_file):
 
         if nf == 'f':
             data = oneFile(input_file)
-            sloc = CSminerGenericMetrics(data).sloc()
-            sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
-            sloc_statements = CSminerGenericMetrics(data).sloc_statements()
-            numArg = CSminerPY(data).numArg()
-            print(sloc, sloc_wbl, sloc_statements, numArg)
-
+            getMetrics(input_file, data)
+            
         elif nf == 'd':
             multipleFiles(input_file)
 

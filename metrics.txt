@@ -11,10 +11,18 @@ METRIC FOR PROGRAMIG LANGUAGE
 - Number of of Arguments -> CSminerPY(data).numArg()
 			 -> CSminerJAVA(data).numArg_argDT()
 			 -> CSminerCplus(data).numArg_argDT()
-- Arguments data type	-> NA
+- Arguments data type	-> NA para PY
 			-> CSminerJAVA(data).numArg_argDT()
 			-> CSminerCplus(data).numArg_argDT()
 
+- Number of expresions -> CSminerPY(data).numVar_numExpressions() - no yet!
+		       -> CSminerJAVA(data).numVar_numExpressions() - this one is used also for c++, works fine :D
+		       -> CSminerJAVA(data).numVar_numExpressions() - Java
+
+- Total number of variables declared -> CSminerPY(data).numVar_numExpressions() - no yet!
+		       		     -> CSminerJAVA(data).numVar_numExpressions() - this one is used also for c++, works fine :D
+		                     -> CSminerJAVA(data).numVar_numExpressions() - Java
 
 if for does not have space it likely give the wrong output the code :/ pero 
 
+- Check argType :( 

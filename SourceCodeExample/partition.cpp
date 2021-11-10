@@ -26,14 +26,3 @@ int partition(double work[], int begin, int end, int pivot) {
     return i;
 }
 
-
-
-
-
-
-
-
-
-
-
-

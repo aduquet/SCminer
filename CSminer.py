@@ -7,6 +7,7 @@ from typing import Counter
 
 from networkx.classes.function import is_empty
 
+
 class keyWords():
     loops = ['for ', 'while ', 'do ', 'if']
     op = ['and', 'or', 'xor']
@@ -14,6 +15,7 @@ class keyWords():
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
     dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'integer ', 'float ']
+
 
 class CSminer_openFile(object):
     def __init__(self, filePath):
@@ -43,6 +45,7 @@ class CSminer_openFile(object):
             print('Extension file','".'+str(inst)+'"' ,'not suported') 
             sys.exit()
 
+
 class CSminerGenericMetrics(object):
     def __init__(self, data):
         self.data = data
@@ -71,6 +74,7 @@ class CSminerGenericMetrics(object):
         loops = list(filter(lambda a: a != 'if', loops))
         return len(loops)
 
+
 class CSminerPY(object):
     def __init__(self, data):
         self.data = data
@@ -85,6 +89,7 @@ class CSminerPY(object):
                     aux.append(i)
         return CSmineOthers(aux).argFinder()
                 
+
 class CSminerJAVA(object):
     def __init__(self, data):
         self.data = data
@@ -99,48 +104,20 @@ class CSminerJAVA(object):
                     aux.append(i)
 
         a, len_a = CSmineOthers(aux).argFinder()
-        argDT = []
-        try:
-            for i in a:
-                var = i.lower()
-                if '[]' in var:
-                    for j in keyWords.dataType:
-                        j = j.replace(' ', '')
-                        if j in var:
-                            argDT.append('array_' + j)
-                else:
-                    for j in keyWords.dataType:
-                        if j in var:
-                            argDT.append(j)   
-            return argDT, len_a
-
-        except:
-            for k in a:
-                for i in k:
-                    var = i.lower()
-                    if '[]' in var:
-                        for j in keyWords.dataType:
-                            j = j.replace(' ', '')
-                            if j in var:
-                                argDT.append('array_' + j)
-                    else:
-                        for j in keyWords.dataType:
-                            if j in var:
-                                argDT.append(j)
-            return argDT, len_a 
+        a = CSmineOthers(a).argType()
+        return a, len_a
 
 
 class CSminerCplus(object):
     def __init__(self, data):
         self.data = data
 
-    def numArg(self):
+    def numArg_argDT(self):
         data = CSmineOthers(self.data).dataSplit()
         data = CSmineOthers(data).removeBlankLines()
         aux = []
         aux2 = []
-        aux3 = []
-
+ 
         for i in data:
             if not CSmineOthers(i).onlySpaces():
                 if i.find(';') == -1:
@@ -149,13 +126,12 @@ class CSminerCplus(object):
         
         for i in range(0, len(aux)):
             if i not in pos:
-                aux2.append(aux[i])
-   
-        for i in aux2:
-            a = i.replace(' ', '')
-            if a not in string.punctuation:
-                aux3.append(a)
-        return CSmineOthers(aux3).argFinder()
+                aux2.append(aux[i]) 
+        #print(aux3)
+        a, len_a = CSmineOthers(aux2).argFinder()
+        a = CSmineOthers(a).argType()
+        return a, len_a
+
 
 class CSmineOthers(object):
 
@@ -191,14 +167,22 @@ class CSmineOthers(object):
                 return a, len(a)
 
             else:
-                num2 =[]
-                for i in self.data:
-                    a = i[i.index('(') + 1 : i.index(')') ].split(',')
-                    num.append(a)
-                    num2.append(len(a))
-                return num, num2
-        except:
+                try:
+                    num2 =[]
+                    for i in self.data:
+                        a = i[i.index('(') + 1 : i.index(')') ].split(',')
+                        num.append(a)
+                        num2.append(len(a))
+                    return num, num2
+                except:
+                    for i in self.data:
+                        if '(' in i:
+                            a = i[i.index('(') + 1 : i.index(')') ].split(',')
+                            num.append(a)
+                            num2.append(len(a))
+                    return num, num2
 
+        except:      
             num = []
             for i in self.data:
                 if i.find('(') != -1:
@@ -223,4 +207,35 @@ class CSmineOthers(object):
                     pos.append(counter)
                 counter += 1
         return loopsName, pos
+    
+    def argType(self):
+        argDT = []
+        try:
+            for i in self.data:
+                var = i.lower()
+                if '[]' in var:
+                    for j in keyWords.dataType:
+                        j = j.replace(' ', '')
+                        if j in var:
+                            argDT.append('array_' + j)
+                else:
+                    for j in keyWords.dataType:
+                        if j in var:
+                            argDT.append(j)   
+            return argDT
+
+        except:
+            for k in self.data:
+                for i in k:
+                    var = i.lower()
+                    if '[]' in var:
+                        for j in keyWords.dataType:
+                            j = j.replace(' ', '')
+                            if j in var:
+                                argDT.append('array_' + j)
+                    else:
+                        for j in keyWords.dataType:
+                            if j in var:
+                                argDT.append(j)
+            return argDT
 

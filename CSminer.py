@@ -2,12 +2,14 @@ import os
 import re
 import sys
 import string
+from typing import Counter
 
 
 class keyWords():
     loops = ['for ', 'while ', 'do ', 'if']
     op = ['and', 'or', 'xor']
-    aritmeticOperator = ['+', '-', '*', '/', '%', '++', '--', '+=', '-=', '*=', '/=', '%=','**']
+    aritmeticOperator = ['+', '-', '*', '/', '%']
+    specialOperands = ['+=', '-=', '*=', '/=', '%=', '++', '--', '**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
     dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'integer ', 'float ']
@@ -102,7 +104,48 @@ class CSminerJAVA(object):
         a, len_a = CSmineOthers(aux).argFinder()
         a = CSmineOthers(a).argType()
         return a, len_a
+    
+    def numVar_numExpressions(self):
+        data = CSmineOthers(self.data).dataSplit()
+        aux = []
+        for i in data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find(';') != -1:
+                    aux.append(i)
+        #aux = CSmineOthers(aux).removeSpace()
+        var = []
+        for i in aux:
+            for j in keyWords.dataType:
+                if j in i:
+                    var.append(i)
+        
+        expression = []
+        for i in aux:
+            for j in keyWords.aritmeticOperator:
+                if j in i:
+                    expression.append(i)       
+        loops, pos = CSmineOthers(expression).Loops()
 
+        aux = []
+        if len(loops) != 0:
+            for i in range(0, len(expression)):
+                if i not in pos:
+                    aux.append(expression[i])
+        else:
+            aux = expression
+        aux = CSmineOthers(aux).removeSpace()
+        print(aux)
+        count = 0
+        for i in aux:
+            for j in keyWords.aritmeticOperator:
+                if j in i:
+                    count +=1
+
+        print(count)    
+        
+        
+        return len(var)
+    
 
 class CSminerCplus(object):
     def __init__(self, data):
@@ -212,7 +255,7 @@ class CSmineOthers(object):
                 if '[]' in var:
                     for j in keyWords.dataType:
                         j = j.replace(' ', '')
-                        if j in var:
+                        if j + '[' in var:
                             argDT.append('array_' + j)
                 else:
                     for j in keyWords.dataType:

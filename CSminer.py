@@ -12,7 +12,7 @@ class keyWords():
     op = ['and', 'or', 'xor']
     aritmeticOperator = ['+', '-', '*', '/', '%', '++', '--', '+=', '-=', '*=', '/=', '%=','**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
-   
+    comments = ['/*', '//', '*/', '/**', '*/' ]
 class CSminer_openFile(object):
     def __init__(self, filePath):
         self.filePath = filePath
@@ -53,7 +53,7 @@ class CSminerGenericMetrics(object):
         aux = CSmineOthers(aux).removeSpace()
         return len(CSmineOthers(aux).removeBlankLines())
     
-    def sloc_statements(self):
+    def sloc_statements_wc(self):
         data = CSmineOthers(self.data).dataSplit()
         aux= []
         for i in data:
@@ -62,6 +62,13 @@ class CSminerGenericMetrics(object):
                 aux.append(a)
         return(len(aux))
     
+    def numLoops(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        loops, pos = CSmineOthers(data).Loops()
+        loops = list(filter(lambda a: a != 'if', loops))
+        return len(loops)
+
 class CSminerPY(object):
     def __init__(self, data):
         self.data = data
@@ -142,7 +149,7 @@ class CSmineOthers(object):
         return self.data.isspace()
     
     def argFinder(self):
-        #print(self.data)
+
         try:
             num = []
             if len(self.data) == 1:
@@ -170,7 +177,6 @@ class CSmineOthers(object):
                 else:
                     num2.append(len(i))
             return num2
-
 
     def Loops(self):
         loopsName = []

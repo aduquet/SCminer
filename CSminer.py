@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import ast
 import string
 
 from networkx.classes.function import is_empty
@@ -66,21 +67,21 @@ class CSminerPY(object):
             if not CSmineOthers(i).onlySpaces():
                 if i.find('def ') != -1:
                     aux.append(i)
-        num = []
-        if len(aux) == 1:
-            a = aux[0].replace(' ', '')
-            a = a[a.index('(') + 1 : a.index(')') ].split(',')
-            return len(a)
-
-        else:
-            
-            for i in aux:
-                a = i.replace(' ', '')
-                a = a[a.index('(') + 1 : a.index(')') ].split(',')
-                num.append(len(a))
-            
-            return num
+        return CSmineOthers(aux).argFinder()
                 
+class CSminerJAVA(object):
+    def __init__(self, data):
+        self.data = data
+
+    def numArg(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        aux = []
+        for i in data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find('public static ') != -1:
+                    aux.append(i)
+        return CSmineOthers(aux).argFinder()
 
 class CSmineOthers(object):
 
@@ -105,5 +106,18 @@ class CSmineOthers(object):
     
     def onlySpaces(self):
         return self.data.isspace()
+    
+    def argFinder(self):
+        num = []
+        if len(self.data) == 1:
+            a = self.data[0].replace(' ', '')
+            a = a[a.index('(') + 1 : a.index(')') ].split(',')
+            return len(a)
 
+        else:
+            for i in self.data:
+                a = i.replace(' ', '')
+                a = a[a.index('(') + 1 : a.index(')') ].split(',')
+                num.append(len(a))
+            return num
 

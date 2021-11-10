@@ -57,11 +57,14 @@ def getMetrics(input_file, data):
     
     elif CSminer_openFile(input_file).extFile() == 'java':
         argDT, numArg = CSminerJAVA(data).numArg_argDT()
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops)
+        numVariablesDeclared, numAritOper = CSminerJAVA(data).numVar_numExpressions()
+        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper)
     
     else:
         argDT, numArg = CSminerCplus(data).numArg_argDT()
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops)
+        numVariablesDeclared, numAritOper = CSminerJAVA(data).numVar_numExpressions()
+
+        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper)
 
 
 if __name__ == '__main__':

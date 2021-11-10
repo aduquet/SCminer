@@ -1,0 +1,11 @@
+Method level metrics:
+
+GENERIC METRICS
+- number of lines of code -> sloc = CSminerGenericMetrics(data).sloc()
+- number of code lines without blank lines -> sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
+- number of java statements -> sloc_statements = CSminerGenericMetrics(data).sloc_statements()
+
+METRIC FOR PROGRAMIG LANGUAGE
+- Number of of Arguments -> CSminerPY(data).numArg()
+			 -> CSminerJAVA(data).numArg()
+			 -> CSminerCplus(data).numArg()

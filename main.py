@@ -60,7 +60,7 @@ def getMetrics(input_file, data):
         print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops)
     
     else:
-        numArg = CSminerCplus(data).numArg()
+        argDT, numArg = CSminerCplus(data).numArg_argDT()
         print(sloc, sloc_wbl, sloc_statements_wc, numArg, numLoops)
 
 

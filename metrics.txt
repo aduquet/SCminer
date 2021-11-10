@@ -3,9 +3,18 @@ Method level metrics:
 GENERIC METRICS
 - number of lines of code -> sloc = CSminerGenericMetrics(data).sloc()
 - number of code lines without blank lines -> sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
-- number of java statements -> sloc_statements = CSminerGenericMetrics(data).sloc_statements()
+- number of statements -> sloc_statements = CSminerGenericMetrics(data).sloc_statements_wc()
+- number of statements without comments -> sloc_statements = CSminerGenericMetrics(data).sloc_statements() ----- NO yet
+- Number of loops
 
 METRIC FOR PROGRAMIG LANGUAGE
 - Number of of Arguments -> CSminerPY(data).numArg()
-			 -> CSminerJAVA(data).numArg()
-			 -> CSminerCplus(data).numArg()
+			 -> CSminerJAVA(data).numArg_argDT()
+			 -> CSminerCplus(data).numArg_argDT()
+- Arguments data type	-> NA
+			-> CSminerJAVA(data).numArg_argDT()
+			-> CSminerCplus(data).numArg_argDT()
+
+
+if for does not have space it likely give the wrong output the code :/ pero 
+

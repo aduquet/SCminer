@@ -1,11 +1,7 @@
 import os
 import re
 import sys
-import ast
 import string
-from typing import Counter
-
-from networkx.classes.function import is_empty
 
 
 class keyWords():
@@ -130,7 +126,7 @@ class CSminerCplus(object):
         #print(aux3)
         a, len_a = CSmineOthers(aux2).argFinder()
         a = CSmineOthers(a).argType()
-        return a, len_a
+        return a, len(a)
 
 
 class CSmineOthers(object):

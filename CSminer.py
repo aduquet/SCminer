@@ -118,35 +118,24 @@ class CSminerJAVA(object):
             for j in keyWords.dataType:
                 if j in i:
                     var.append(i)
-        
-        expression = []
-        for i in aux:
-            for j in keyWords.aritmeticOperator:
-                if j in i:
-                    expression.append(i)       
-        loops, pos = CSmineOthers(expression).Loops()
 
-        aux = []
+        loops, pos = CSmineOthers(aux).Loops()
+        aux1 = []
         if len(loops) != 0:
-            for i in range(0, len(expression)):
+            for i in range(0, len(aux)):
                 if i not in pos:
-                    aux.append(expression[i])
+                    aux1.append(aux[i])
         else:
-            aux = expression
-        aux = CSmineOthers(aux).removeSpace()
-        print(aux)
+            aux1 = aux
+
         count = 0
-        for i in aux:
+        for i in aux1:
             for j in keyWords.aritmeticOperator:
                 if j in i:
-                    count +=1
-
-        print(count)    
+                    count +=1      
         
-        
-        return len(var)
+        return len(var), count
     
-
 class CSminerCplus(object):
     def __init__(self, data):
         self.data = data

@@ -5,7 +5,6 @@ def partition(work, begin, end, pivot):
 
     i = begin + 1
     j = end - 1
-for 
     while i < j:
         while i < j and work[j] > value:
             j -= 1

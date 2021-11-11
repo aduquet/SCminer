@@ -11,6 +11,11 @@ METRIC FOR PROGRAMIG LANGUAGE
 - Number of of Arguments -> CSminerPY(data).numArg()
 			 -> CSminerJAVA(data).numArg_argDT()
 			 -> CSminerCplus(data).numArg_argDT()
+
+- Number of arguments or method inputs  -> NA para PY
+				 	-> CSminerJAVA(data).numArg_argDT()
+					-> CSminerCplus(data).numArg_argDT()
+
 - Arguments data type	-> NA para PY
 			-> CSminerJAVA(data).numArg_argDT()
 			-> CSminerCplus(data).numArg_argDT()
@@ -23,6 +28,10 @@ METRIC FOR PROGRAMIG LANGUAGE
 		       		     -> CSminerGenericMetrics(data).numVar_numOper() - this one is used also for c++, works fine :D
 		                     -> CSminerGenericMetrics(data).numVar_numOper() - Java
 
-if for does not have space it likely give the wrong output the code :/ pero 
+- Number of external methods called -> CSminerGenericMetrics(data).numMethodCall()
+
+-  
+
+If for does not have space it likely give the wrong output the code :/ pero 
 
 - Check argType :( 

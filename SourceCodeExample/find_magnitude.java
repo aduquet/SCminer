@@ -1,11 +1,12 @@
 
 
 public class find_magnitude {
-    public static double find_magnitude_m(Integer[] a) {
+    public static double find_magnitude_m(Integer[] a111) {
         int i;
         double sum = 0;
-        for (i = 0; i < a.length; i++) {
+        for (i = 0; i < a111.length; i++) {
             sum += a[i] * a[i];
+            sum = 9.2;
         }
         double result = Math.sqrt(sum);
         return result;

@@ -15,9 +15,9 @@ METRIC FOR PROGRAMIG LANGUAGE
 			-> CSminerJAVA(data).numArg_argDT()
 			-> CSminerCplus(data).numArg_argDT()
 
-- Number of expresions -> CSminerPY(data).numVar_numExpressions() - no yet!
-		       -> CSminerJAVA(data).numVar_numExpressions() - this one is used also for c++, works fine :D
-		       -> CSminerJAVA(data).numVar_numExpressions() - Java
+- Number of expresions -> CSminerPY(data).numVar_numOper() - no yet!
+		       -> CSminerJAVA(data).numVar_numOper() - this one is used also for c++, works fine :D
+		       -> CSminerJAVA(data).numVar_numOper() - Java
 
 - Total number of variables declared -> CSminerPY(data).numVar_numExpressions() - no yet!
 		       		     -> CSminerJAVA(data).numVar_numExpressions() - this one is used also for c++, works fine :D

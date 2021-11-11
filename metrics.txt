@@ -15,13 +15,13 @@ METRIC FOR PROGRAMIG LANGUAGE
 			-> CSminerJAVA(data).numArg_argDT()
 			-> CSminerCplus(data).numArg_argDT()
 
-- Number of expresions -> CSminerPY(data).numVar_numOper() - no yet!
-		       -> CSminerJAVA(data).numVar_numOper() - this one is used also for c++, works fine :D
-		       -> CSminerJAVA(data).numVar_numOper() - Java
+- Number of expresions -> CSminerPY(data).numVar_numOper()
+		       -> CSminerGenericMetrics(data).numVar_numOper() - this one is used also for c++, works fine :D
+		       -> CSminerGenericMetrics(data).numVar_numOper() - Java
 
-- Total number of variables declared -> CSminerPY(data).numVar_numExpressions() - no yet!
-		       		     -> CSminerJAVA(data).numVar_numExpressions() - this one is used also for c++, works fine :D
-		                     -> CSminerJAVA(data).numVar_numExpressions() - Java
+- Total number of variables declared -> CSminerPY(data).numVar_numExpressions()
+		       		     -> CSminerGenericMetrics(data).numVar_numOper() - this one is used also for c++, works fine :D
+		                     -> CSminerGenericMetrics(data).numVar_numOper() - Java
 
 if for does not have space it likely give the wrong output the code :/ pero 
 

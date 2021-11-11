@@ -8,7 +8,7 @@ from typing import Counter
 class keyWords():
     loops = ['for ', 'while ', 'do ', 'if']
     op = ['and', 'or', 'xor']
-    aritmeticOperator = ['+', '-', '*', '/', '%']
+    aritmeticOperator = ['+', '-', '*', '/', '%', 'sqrt', '^', 'pow']
     specialOperands = ['+=', '-=', '*=', '/=', '%=', '++', '--', '**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
@@ -72,39 +72,6 @@ class CSminerGenericMetrics(object):
         loops = list(filter(lambda a: a != 'if', loops))
         return len(loops)
 
-
-class CSminerPY(object):
-    def __init__(self, data):
-        self.data = data
-
-    def numArg(self):
-        data = CSmineOthers(self.data).dataSplit()
-        data = CSmineOthers(data).removeBlankLines()
-        aux = []
-        for i in data:
-            if not CSmineOthers(i).onlySpaces():
-                if i.find('def ') != -1:
-                    aux.append(i)
-        return CSmineOthers(aux).argFinder()
-                
-
-class CSminerJAVA(object):
-    def __init__(self, data):
-        self.data = data
-
-    def numArg_argDT(self):
-        data = CSmineOthers(self.data).dataSplit()
-        data = CSmineOthers(data).removeBlankLines()
-        aux = []
-        for i in data:
-            if not CSmineOthers(i).onlySpaces():
-                if i.find('public static ') != -1:
-                    aux.append(i)
-
-        a, len_a = CSmineOthers(aux).argFinder()
-        a = CSmineOthers(a).argType()
-        return a, len_a
-    
     def numVar_numExpressions(self):
         data = CSmineOthers(self.data).dataSplit()
         aux = []
@@ -135,6 +102,40 @@ class CSminerJAVA(object):
                     count +=1      
         
         return len(var), count
+
+class CSminerPY(object):
+    def __init__(self, data):
+        self.data = data
+
+    def numArg(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        aux = []
+        for i in data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find('def ') != -1:
+                    aux.append(i)
+        return CSmineOthers(aux).argFinder()
+    
+                
+
+class CSminerJAVA(object):
+    def __init__(self, data):
+        self.data = data
+
+    def numArg_argDT(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        aux = []
+        for i in data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find('public static ') != -1:
+                    aux.append(i)
+
+        a, len_a = CSmineOthers(aux).argFinder()
+        a = CSmineOthers(a).argType()
+        return a, len_a
+    
     
 class CSminerCplus(object):
     def __init__(self, data):

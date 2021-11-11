@@ -72,7 +72,7 @@ class CSminerGenericMetrics(object):
         loops = list(filter(lambda a: a != 'if', loops))
         return len(loops)
 
-    def numVar_numExpressions(self):
+    def numVar_numOper(self):
         data = CSmineOthers(self.data).dataSplit()
         aux = []
         for i in data:
@@ -103,6 +103,7 @@ class CSminerGenericMetrics(object):
         
         return len(var), count
 
+
 class CSminerPY(object):
     def __init__(self, data):
         self.data = data
@@ -116,8 +117,7 @@ class CSminerPY(object):
                 if i.find('def ') != -1:
                     aux.append(i)
         return CSmineOthers(aux).argFinder()
-    
-                
+
 
 class CSminerJAVA(object):
     def __init__(self, data):
@@ -135,8 +135,8 @@ class CSminerJAVA(object):
         a, len_a = CSmineOthers(aux).argFinder()
         a = CSmineOthers(a).argType()
         return a, len_a
-    
-    
+
+
 class CSminerCplus(object):
     def __init__(self, data):
         self.data = data

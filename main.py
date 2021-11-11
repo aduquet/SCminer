@@ -51,21 +51,23 @@ def getMetrics(input_file, data):
     sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
     sloc_statements_wc = CSminerGenericMetrics(data).sloc_statements_wc()
     numLoops = CSminerGenericMetrics(data).numLoops()
+    numMethodsCalled = CSminerGenericMetrics(data).numMethodCall()
     if CSminer_openFile(input_file).extFile() == 'py':
         argDT, numArg = CSminerPY(data).numArg()
         numVariablesDeclared, numAritOper = CSminerPY(data).numVar_numOper()
-        print(sloc, sloc_wbl, sloc_statements_wc, argDT, numArg, numLoops, numVariablesDeclared, numAritOper)
+        print(sloc, sloc_wbl, sloc_statements_wc, argDT, numArg, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
     
     elif CSminer_openFile(input_file).extFile() == 'java':
         argDT, numArg = CSminerJAVA(data).numArg_argDT()
         numVariablesDeclared, numAritOper = CSminerGenericMetrics(data).numVar_numOper()
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper)
+        
+        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
     
     else:
         argDT, numArg = CSminerCplus(data).numArg_argDT()
         numVariablesDeclared, numAritOper = CSminerGenericMetrics(data).numVar_numOper()
 
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper)
+        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
 
 
 if __name__ == '__main__':

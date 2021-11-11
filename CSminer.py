@@ -2,14 +2,15 @@ import os
 import re
 import sys
 import string
+from tkinter.constants import FALSE
 from typing import Counter
 
 
 class keyWords():
     loops = ['for ', 'while ', 'do ', 'if']
     op = ['and', 'or', 'xor']
-    aritmeticOperator = ['+', '-', '*', '/', '%', 'sqrt', '^', 'pow']
-    specialOperands = ['+=', '-=', '*=', '/=', '%=', '++', '--', '**']
+    aritmeticOperator = ['+', '-', '*', '/', '%', 'sqrt', '^', 'pow', 'abs', 'log']
+    specialOperands = ['++', '--', '**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
     dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'integer ', 'float ']
@@ -95,10 +96,29 @@ class CSminerGenericMetrics(object):
         else:
             aux1 = aux
 
-        count = CSmineOthers(aux).countFunc()   
-        
+        count = CSmineOthers(aux1).countFunc()   
         return len(var), count
 
+    def numMethodCall(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        #data = CSmineOthers(data).removeSpace()
+        data = CSmineOthers(data).semiColomNoRemove()
+        # find external methods
+        aux = []
+        pos = []
+        
+        for i in data:
+            i = i.replace(';','')
+            if i.find('.') != -1:
+                a = list(set(i.split(' ')))
+                aux += a
+
+        for i in aux:
+            if i.find('.') != -1:
+                if CSminerBool.is_number(i) == FALSE:
+                    pos.append(i)        
+        return len(pos)      
 
 class CSminerPY(object):
     def __init__(self, data):
@@ -157,7 +177,7 @@ class CSminerJAVA(object):
         a = CSmineOthers(a).argType()
         return a, len_a
 
-
+        
 class CSminerCplus(object):
     def __init__(self, data):
         self.data = data
@@ -177,14 +197,12 @@ class CSminerCplus(object):
         for i in range(0, len(aux)):
             if i not in pos:
                 aux2.append(aux[i]) 
-        #print(aux3)
         a, len_a = CSmineOthers(aux2).argFinder()
         a = CSmineOthers(a).argType()
         return a, len(a)
 
 
 class CSmineOthers(object):
-
     def __init__(self, data):
         self.data = data
     
@@ -296,3 +314,28 @@ class CSmineOthers(object):
                 if j in i:
                     count +=1
         return count
+
+    def semiColomRemove(self):
+        aux = []
+        for i in self.data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find(';') == -1:
+                    aux.append(i)
+        return aux
+    
+    def semiColomNoRemove(self):
+        aux = []
+        for i in self.data:
+            if not CSmineOthers(i).onlySpaces():
+                if i.find(';') != -1:
+                    aux.append(i)
+        return aux
+
+class CSminerBool():
+    def is_number(n):
+        try:
+            float(n)
+            return True
+        except ValueError:
+            return False
+

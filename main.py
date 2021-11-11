@@ -52,9 +52,9 @@ def getMetrics(input_file, data):
     sloc_statements_wc = CSminerGenericMetrics(data).sloc_statements_wc()
     numLoops = CSminerGenericMetrics(data).numLoops()
     if CSminer_openFile(input_file).extFile() == 'py':
-        numArg = CSminerPY(data).numArg()
-        numVariablesDeclared, numAritOper = CSminerJAVA(data).numVar_numExpressions()
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, numLoops)
+        argDT, numArg = CSminerPY(data).numArg()
+        numVariablesDeclared, numAritOper = CSminerPY(data).numVar_numOper()
+        print(sloc, sloc_wbl, sloc_statements_wc, argDT, numArg, numLoops, numVariablesDeclared, numAritOper)
     
     elif CSminer_openFile(input_file).extFile() == 'java':
         argDT, numArg = CSminerJAVA(data).numArg_argDT()

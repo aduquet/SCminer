@@ -95,11 +95,7 @@ class CSminerGenericMetrics(object):
         else:
             aux1 = aux
 
-        count = 0
-        for i in aux1:
-            for j in keyWords.aritmeticOperator:
-                if j in i:
-                    count +=1      
+        count = CSmineOthers(aux).countFunc()   
         
         return len(var), count
 
@@ -117,6 +113,31 @@ class CSminerPY(object):
                 if i.find('def ') != -1:
                     aux.append(i)
         return CSmineOthers(aux).argFinder()
+    
+    def numVar_numOper(self):
+        data = CSmineOthers(self.data).dataSplit()
+        aux = []
+        # number of arimetic operations
+        for i in data:
+            i = i.replace(' ','')
+            if i != '':
+                if i.find(':') == -1:
+                    aux.append(i)
+        count = CSmineOthers(aux).countFunc()
+
+        # number of variable declared
+        var = []
+        oper = []
+        aux2 = []
+        for i in aux:
+            if '=' in i:
+                aux2.append(i)
+                for j in keyWords.aritmeticOperator:
+                    if j in i:
+                        oper.append(i)
+        var = [item for item in aux2 if item not in oper]
+        print(count)
+        return len(var), count
 
 
 class CSminerJAVA(object):
@@ -268,3 +289,10 @@ class CSmineOthers(object):
                                 argDT.append(j)
             return argDT
 
+    def countFunc(self):
+        count = 0
+        for i in self.data:
+            for j in keyWords.aritmeticOperator:
+                if j in i:
+                    count +=1
+        return count

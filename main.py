@@ -47,27 +47,101 @@ def multipleFiles(input_file):
 
 def getMetrics(input_file, data):
 
-    sloc = CSminerGenericMetrics(data).sloc()
-    sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
-    sloc_statements_wc = CSminerGenericMetrics(data).sloc_statements_wc()
-    numLoops = CSminerGenericMetrics(data).numLoops()
-    numMethodsCalled = CSminerGenericMetrics(data).numMethodCall()
+    name = input_file.split('\\')[-1]
+    name = name.split('.')[0]
+    
+    cyclomatic_complexity, nloc, token_count, start_line, end_line, full_parameters = CSminer_openFile(input_file).CSminerLizar()
+    
+    updateDF(name, 'cyclomatic_complexity', cyclomatic_complexity)
+    updateDF(name, 'nloc', nloc)
+    updateDF(name, 'token_count', token_count)
+    updateDF(name, 'start_line', start_line)
+    updateDF(name, 'end_line', end_line)
+    updateDF(name, 'full_parameters', full_parameters)
+
+    updateDF(name, 'tloc', CSminerGenericMetrics(data).tloc())    
+    
+    updateDF(name, 'sloc_wbl', CSminerGenericMetrics(data).sloc_wbl())
+    
+    updateDF(name, 'sloc_statements_wc', CSminerGenericMetrics(data).sloc_statements_wc())    
+    
+    updateDF(name, 'numLoops', CSminerGenericMetrics(data).numLoops())    
+    
+    updateDF(name, 'numMethodsCalled', CSminerGenericMetrics(data).numMethodCall())    
+    
     if CSminer_openFile(input_file).extFile() == 'py':
         argDT, numArg = CSminerPY(data).numArg()
+        updateDF(name, 'argDT', 'NA') 
+        updateDF(name, 'numArg', 'NA') 
+        
         numVariablesDeclared, numAritOper = CSminerPY(data).numVar_numOper()
-        print(sloc, sloc_wbl, sloc_statements_wc, argDT, numArg, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
+        updateDF(name, 'numArg', numVariablesDeclared)
+        updateDF(name, 'numArg', numAritOper)
+        
+        # print(sloc, sloc_wbl, sloc_statements_wc, argDT, numArg, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
     
     elif CSminer_openFile(input_file).extFile() == 'java':
         argDT, numArg = CSminerJAVA(data).numArg_argDT()
-        numVariablesDeclared, numAritOper = CSminerGenericMetrics(data).numVar_numOper()
+        updateDF(name, 'numArg', argDT)
+        updateDF(name, 'numArg', numArg)
         
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
+        numVariablesDeclared, numAritOper = CSminerGenericMetrics(data).numVar_numOper()
+        updateDF(name, 'numArg', numVariablesDeclared)
+        updateDF(name, 'numArg', numAritOper)
+
+        # print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
     
     else:
         argDT, numArg = CSminerCplus(data).numArg_argDT()
+        updateDF(name, 'numArg', argDT)
+        updateDF(name, 'numArg', numArg)
+        
         numVariablesDeclared, numAritOper = CSminerGenericMetrics(data).numVar_numOper()
+        updateDF(name, 'numArg', numVariablesDeclared)
+        updateDF(name, 'numArg', numAritOper)
+        
+        # print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
+    
+    saveDF(df_main)
 
-        print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
+def updateDF(method_id, metric_id, metric):
+    global df_main
+
+    if not df_main.empty:
+        df_main.at[method_id, metric_id] = metric        
+    
+    else:
+        df_main.at[method_id] = method_id
+        df_main.at[method_id, metric_id] = metric
+    
+def saveDF(name):
+
+    print(df_main)
+    
+
+def createDF():
+    global df_main
+
+    metric_names = [ 
+        'method_id',
+        'cyclomatic_complexity', 
+        'nloc', 
+        'token_count', 
+        'start_line', 
+        'end_line', 
+        'full_parameters',
+        'tloc', 
+        'sloc_wbl', 
+        'sloc_statements_wc', 
+        'argDT', 
+        'numArg', 
+        'numLoops', 
+        'numVariablesDeclared', 
+        'numAritOper', 
+        'numMethodsCalled'
+    ]
+
+    df_main = pd.DataFrame(columns = metric_names, index=None)
 
 
 if __name__ == '__main__':
@@ -79,6 +153,16 @@ if __name__ == '__main__':
     @click.option('-o', '--output', 'output_file', help = 'Output file Name')
 
     def main(input_file, nf, output_file):
+
+        global df_main
+        
+
+        here_iam = str(pathlib.Path().absolute())
+        resultsPath = here_iam + '\\CSminerResults-csv'
+        createDF()
+
+        if not os.path.exists(resultsPath):
+            os.mkdir(resultsPath)
 
         if nf == 'f':
             data = oneFile(input_file)

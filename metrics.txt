@@ -1,16 +1,27 @@
 Method level metrics:
 
 GENERIC METRICS
-- number of lines of code -> sloc = CSminerGenericMetrics(data).sloc()
-- number of code lines without blank lines -> sloc_wbl = CSminerGenericMetrics(data).sloc_wbl()
-- number of statements -> sloc_statements = CSminerGenericMetrics(data).sloc_statements_wc()
-- number of statements without comments -> sloc_statements = CSminerGenericMetrics(data).sloc_statements() ----- NO yet
-- Number of loops
+- Total number of lines of code -> sloc = CSminerGenericMetrics(data).sloc()
+- Number of code lines without blank lines-> sloc_wbl -> CSminerGenericMetrics(data).sloc_wbl()
+- Number of code lines without blank lines and without comments -> sloc
+- Number of statements with comments or libraries -> sloc_statements = CSminerGenericMetrics(data).sloc_statements_wc()
+- Number of loops -> numLoops -> CSminerGenericMetrics(data).numLoops()
+- Number of commenten lines -> numbCommentLines
+- 
+
+- Number of statements without comments, libraries call, -> sloc_statements = CSminerGenericMetrics(data).sloc_statements() ----- 
+- CCN (cyclomatic complexity number)
+- token count of functions
+- Number of commentet lines -> numberOfCommentLines
+- Number of comments -> numberOfComments
+- Number of operators -> numberof
+- Number of Expressions ->
+- totalNesting
 
 METRIC FOR PROGRAMIG LANGUAGE
-- Number of of Arguments -> CSminerPY(data).numArg()
-			 -> CSminerJAVA(data).numArg_argDT()
-			 -> CSminerCplus(data).numArg_argDT()
+- Number of of Arguments -> numArf -> CSminerPY(data).numArg_argDT()
+			 -> numArg -> CSminerJAVA(data).numArg_argDT()
+			 -> numArg -> CSminerCplus(data).numArg_argDT()
 
 - Number of arguments or method inputs  -> NA para PY
 				 	-> CSminerJAVA(data).numArg_argDT()
@@ -20,7 +31,7 @@ METRIC FOR PROGRAMIG LANGUAGE
 			-> CSminerJAVA(data).numArg_argDT()
 			-> CSminerCplus(data).numArg_argDT()
 
-- Number of expresions -> CSminerPY(data).numVar_numOper()
+- Number of operator-> CSminerPY(data).numVar_numOper()
 		       -> CSminerGenericMetrics(data).numVar_numOper() - this one is used also for c++, works fine :D
 		       -> CSminerGenericMetrics(data).numVar_numOper() - Java
 
@@ -30,7 +41,7 @@ METRIC FOR PROGRAMIG LANGUAGE
 
 - Number of external methods called -> CSminerGenericMetrics(data).numMethodCall()
 
--  
+
 
 If for does not have space it likely give the wrong output the code :/ pero 
 

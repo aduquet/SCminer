@@ -15,7 +15,7 @@ class keyWords():
     specialOperands = ['++', '--', '**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
-    dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'Integer ', 'float ']
+    dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'Integer ', 'float ', 'Byte ', 'Short ', 'Long ', 'Double ', 'Char ', 'Boolean ',]
 
 
 class CSminer_openFile(object):

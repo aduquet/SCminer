@@ -1,6 +1,6 @@
 #include <iostream>
 
-int partition(double work[], int begin, int end, int pivot) {
+int partition(double work[  ], int begin, int end, int pivot) {
     double value = work[pivot];
     work[pivot] = work[begin];
     int i = begin + 1;

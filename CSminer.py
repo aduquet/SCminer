@@ -1,6 +1,8 @@
+
 import os
 import re
 import sys
+import lizard
 import string
 from tkinter.constants import FALSE
 from typing import Counter
@@ -13,7 +15,7 @@ class keyWords():
     specialOperands = ['++', '--', '**']
     comparativeOperator = ['<', '>', '<=', '>=', '==', '!=', '&&', '||', '!', '&', '|', '<<', '>>', '~', '^' ]
     comments = ['/*', '//', '*/', '/**', '*/' ]
-    dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'integer ', 'float ']
+    dataType = ['byte ', 'short ', 'int ', 'long ', 'double ', 'char ', 'boolean ', 'Integer ', 'float ']
 
 
 class CSminer_openFile(object):
@@ -21,6 +23,18 @@ class CSminer_openFile(object):
         self.filePath = filePath
         self.data = self.openfile()
     
+    def CSminerLizar(self):
+        i = lizard.analyze_file(self.filePath)
+
+        cyclomatic_complexity = i.function_list[0].__dict__['cyclomatic_complexity']
+        nloc = i.function_list[0].__dict__['nloc']
+        token_count = i.function_list[0].__dict__['token_count']
+        start_line = i.function_list[0].__dict__['start_line']
+        end_line = i.function_list[0].__dict__['end_line']
+        full_parameters = i.function_list[0].__dict__['full_parameters']
+
+        return cyclomatic_complexity, nloc, token_count, start_line, end_line, full_parameters
+
     def openfile(self):
         data = open(self.filePath, 'r')
         return data
@@ -49,7 +63,7 @@ class CSminerGenericMetrics(object):
     def __init__(self, data):
         self.data = data
 
-    def sloc(self):
+    def tloc(self):
         return len(CSmineOthers(self.data).dataSplit())
     
     def sloc_wbl(self):
@@ -156,7 +170,7 @@ class CSminerPY(object):
                     if j in i:
                         oper.append(i)
         var = [item for item in aux2 if item not in oper]
-        print(count)
+        # print(count)
         return len(var), count
 
 
@@ -196,9 +210,10 @@ class CSminerCplus(object):
         
         for i in range(0, len(aux)):
             if i not in pos:
-                aux2.append(aux[i]) 
+                aux2.append(aux[i])
+        
         a, len_a = CSmineOthers(aux2).argFinder()
-        a = CSmineOthers(a).argType()
+        a = CSmineOthers(a[0]).argType()
         return a, len(a)
 
 
@@ -233,7 +248,6 @@ class CSmineOthers(object):
                 a = self.data[0]
                 a = a[a.index('(') + 1 : a.index(')') ].split(',')
                 return a, len(a)
-
             else:
                 try:
                     num2 =[]
@@ -249,7 +263,6 @@ class CSmineOthers(object):
                             num.append(a)
                             num2.append(len(a))
                     return num, num2
-
         except:      
             num = []
             for i in self.data:
@@ -279,26 +292,28 @@ class CSmineOthers(object):
     def argType(self):
         argDT = []
         try:
+    #        print(self.data)
             for i in self.data:
-                var = i.lower()
-                if '[]' in var:
+                #print(i)
+                if '[' and ']' in i:
                     for j in keyWords.dataType:
                         j = j.replace(' ', '')
-                        if j + '[' in var:
+                        if j in i:
                             argDT.append('array_' + j)
                 else:
                     for j in keyWords.dataType:
-                        if j in var:
-                            argDT.append(j)   
+                        if j in i:
+                            argDT.append(j)     
             return argDT
 
         except:
             for k in self.data:
                 for i in k:
                     var = i.lower()
-                    if '[]' in var:
+                    var = var.replace(' ', '')
+                    
+                    if '[' and ']' in var:
                         for j in keyWords.dataType:
-                            j = j.replace(' ', '')
                             if j in var:
                                 argDT.append('array_' + j)
                     else:
@@ -338,4 +353,3 @@ class CSminerBool():
             return True
         except ValueError:
             return False
-

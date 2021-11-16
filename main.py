@@ -61,9 +61,8 @@ def getMetrics(input_file, data):
     updateDF(name, 'sloc_statements_wc', CSminerGenericMetrics(data).sloc_statements_wc())    
     updateDF(name, 'nloc_whbl', np.abs(np.abs(nloc - CSminerGenericMetrics(data).sloc_statements_wc()) - nloc))
     updateDF(name, 'numLoops', CSminerGenericMetrics(data).numLoops())    
-    updateDF(name, 'numMethodsCalled', CSminerGenericMetrics(data).numMethodCall())    
-    
-    CSminerGenericMetrics(data).hasReturn()
+    updateDF(name, 'numExternalMethods', CSminerGenericMetrics(data).numMethodCall())    
+       
 
     if CSminer_openFile(input_file).extFile() == 'py':
         argDT, numArg = CSminerPY(data).numArg()
@@ -74,8 +73,12 @@ def getMetrics(input_file, data):
         updateDF(name, 'numVariablesDeclared', numVariablesDeclared)
         updateDF(name, 'numAritOper', numAritOper)
         updateDF(name, 'ext', 'py')
-        
-        # print(sloc, sloc_wbl, sloc_statements_wc, argDT, numArg, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
+
+        hasReturn, totalReturns, TotalVariablesReturned, returnType = CSminerPY(data).returnInfo()
+        updateDF(name, 'return', hasReturn)
+        updateDF(name, 'Total_return', totalReturns)
+        updateDF(name, 'TotalVariablesReturned', TotalVariablesReturned)
+        updateDF(name, 'returnType', returnType)
     
     elif CSminer_openFile(input_file).extFile() == 'java':
         argDT, numArg = CSminerJAVA(data).numArg_argDT()
@@ -87,8 +90,12 @@ def getMetrics(input_file, data):
         updateDF(name, 'numAritOper', numAritOper)
         updateDF(name, 'ext', 'java')
 
-        # print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
-    
+        hasReturn, totalReturns, TotalVariablesReturned, returnType = CSminerGenericMetrics(data).returnInfo()
+        updateDF(name, 'return', hasReturn)
+        updateDF(name, 'Total_return', totalReturns)
+        updateDF(name, 'TotalVariablesReturned', TotalVariablesReturned)
+        updateDF(name, 'returnType', returnType)
+   
     else:
         argDT, numArg = CSminerCplus(data).numArg_argDT()
         updateDF(name, 'argDT', argDT)
@@ -97,10 +104,15 @@ def getMetrics(input_file, data):
         numVariablesDeclared, numAritOper = CSminerGenericMetrics(data).numVar_numOper()
         updateDF(name, 'numVariablesDeclared', numVariablesDeclared)
         updateDF(name, 'numAritOper', numAritOper)
-        updateDF(name, 'ext', 'cpp')      
-        # print(sloc, sloc_wbl, sloc_statements_wc, numArg, argDT, numLoops, numVariablesDeclared, numAritOper, numMethodsCalled)
-    
-    saveDF('results.csv')
+        updateDF(name, 'ext', 'cpp')
+
+        hasReturn, totalReturns, TotalVariablesReturned, returnType = CSminerGenericMetrics(data).returnInfo()
+        updateDF(name, 'return', hasReturn)
+        updateDF(name, 'Total_return', totalReturns)
+        updateDF(name, 'TotalVariablesReturned', TotalVariablesReturned)
+        updateDF(name, 'returnType', returnType)      
+   
+    saveDF('results1.csv')
 
 def updateDF(method_id, metric_id, metric):
     global df_main
@@ -137,8 +149,10 @@ def createDF():
         'numLoops', 
         'numVariablesDeclared', 
         'numAritOper', 
-        'numMethodsCalled'
+        'numExternalMethods',
         'return',
+        'Total_return',
+        'TotalVariablesReturned',
         'returnType',
         'ext'
     ]

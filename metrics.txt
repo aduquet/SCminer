@@ -1,7 +1,7 @@
 Method level metrics:
 
 GENERIC METRICS
-- Total number of lines of code -> sloc = CSminerGenericMetrics(data).sloc()
+- Total number of lines of code -> sloc = CSminerGenericMetrics(data).tloc()
 - Number of code lines without blank lines-> sloc_wbl -> CSminerGenericMetrics(data).sloc_wbl()
 - Number of code lines without blank lines and without comments -> sloc
 - Number of statements with comments or libraries -> sloc_statements = CSminerGenericMetrics(data).sloc_statements_wc()
@@ -46,3 +46,5 @@ METRIC FOR PROGRAMIG LANGUAGE
 If for does not have space it likely give the wrong output the code :/ pero 
 
 - Check argType :( 
+
+python main.py -i C:\Users\duquet\Documents\GitHub\CSminer\SourceCodeExample\* -nf d -o asdf

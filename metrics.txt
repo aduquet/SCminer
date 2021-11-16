@@ -1,31 +1,27 @@
 Method level metrics:
 
 GENERIC METRICS
-- Total number of lines of code -> sloc = CSminerGenericMetrics(data).tloc()
+- Total number of lines of code -> tloc = CSminerGenericMetrics(data).tloc()
 - Number of code lines without blank lines-> sloc_wbl -> CSminerGenericMetrics(data).sloc_wbl()
-- Number of code lines without blank lines and without comments -> sloc
+- Number of code lines without blank lines and without comments or libraries-> 'nloc_whbl', np.abs(np.abs(nloc - CSminerGenericMetrics(data).sloc_statements_wc()) - nloc))
 - Number of statements with comments or libraries -> sloc_statements = CSminerGenericMetrics(data).sloc_statements_wc()
 - Number of loops -> numLoops -> CSminerGenericMetrics(data).numLoops()
-- Number of commenten lines -> numbCommentLines
-- 
 
-- Number of statements without comments, libraries call, -> sloc_statements = CSminerGenericMetrics(data).sloc_statements() ----- 
-- CCN (cyclomatic complexity number)
-- token count of functions
-- Number of commentet lines -> numberOfCommentLines
-- Number of comments -> numberOfComments
-- Number of operators -> numberof
-- Number of Expressions ->
-- totalNesting
+LIZARD Metrics 
+cyclomatic_complexity, nloc, token_count, start_line, end_line, full_parameters = CSminer_openFile(input_file).CSminerLizar()
+
+- cyclomatic_complexity -> i.function_list[0].__dict__['cyclomatic_complexity']
+- nloc -> i.function_list[0].__dict__['nloc']
+- token_count -> i.function_list[0].__dict__['token_count']
+- start_line -> i.function_list[0].__dict__['start_line']
+- end_line -> i.function_list[0].__dict__['end_line']
+- full_parameters -> i.function_list[0].__dict__['full_parameters']
+
 
 METRIC FOR PROGRAMIG LANGUAGE
-- Number of of Arguments -> numArf -> CSminerPY(data).numArg_argDT()
+- Number of of Arguments -> numArf -> NA python
 			 -> numArg -> CSminerJAVA(data).numArg_argDT()
 			 -> numArg -> CSminerCplus(data).numArg_argDT()
-
-- Number of arguments or method inputs  -> NA para PY
-				 	-> CSminerJAVA(data).numArg_argDT()
-					-> CSminerCplus(data).numArg_argDT()
 
 - Arguments data type	-> NA para PY
 			-> CSminerJAVA(data).numArg_argDT()
@@ -42,9 +38,14 @@ METRIC FOR PROGRAMIG LANGUAGE
 - Number of external methods called -> CSminerGenericMetrics(data).numMethodCall()
 
 
-
 If for does not have space it likely give the wrong output the code :/ pero 
 
 - Check argType :( 
 
 python main.py -i C:\Users\duquet\Documents\GitHub\CSminer\SourceCodeExample\* -nf d -o asdf
+
+
+CSminer plus
+- Number of commenten lines -> numbCommentLines
+- Number of commentet lines -> numberOfCommentLines
+- Number of comments -> numberOfComments

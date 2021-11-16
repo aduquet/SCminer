@@ -1,4 +1,3 @@
-
 import os
 import re
 import sys
@@ -66,7 +65,7 @@ class CSminerGenericMetrics(object):
     def tloc(self):
         return len(CSmineOthers(self.data).dataSplit())
     
-    def sloc_wbl(self):
+    def sloc_whbl(self):
         aux = CSmineOthers(self.data).dataSplit()
         aux = CSmineOthers(aux).removeSpace()
         return len(CSmineOthers(aux).removeBlankLines())
@@ -133,6 +132,12 @@ class CSminerGenericMetrics(object):
                 if CSminerBool.is_number(i) == FALSE:
                     pos.append(i)        
         return len(pos)      
+
+    def hasReturn(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        print(data)
+
 
 class CSminerPY(object):
     def __init__(self, data):

@@ -131,12 +131,40 @@ class CSminerGenericMetrics(object):
             if i.find('.') != -1:
                 if CSminerBool.is_number(i) == FALSE:
                     pos.append(i)        
-        return len(pos)      
+        return len(pos)
 
-    def hasReturn(self):
+
+    def returnInfo(self):
         data = CSmineOthers(self.data).dataSplit()
         data = CSmineOthers(data).removeBlankLines()
-        print(data)
+        count = 0
+        for i in data:
+            i = i.replace('  ','')
+            i = i.replace('{','')
+            i = i.replace('}','')
+            if 'return' in i:
+                if ';' in i:
+                    returnInf = i.replace(';','')
+                    returnInf = returnInf.split(' ')
+                    returnInf.remove('return')
+                
+                else: 
+                    returnInf = i.split(' ')
+                    returnInf.remove('return')
+                count += 1
+
+        if count == 0:
+            return False, 0, 'NA', 'NA'
+        
+        else:
+            
+            for i in data:
+                i = i.replace('  ','')
+                if returnInf[0] + ' =' in i:
+                    for j in keyWords.dataType:
+                        if j in i:
+                            returnInfaux = j
+            return True, count, 1, returnInfaux
 
 
 class CSminerPY(object):
@@ -177,6 +205,24 @@ class CSminerPY(object):
         var = [item for item in aux2 if item not in oper]
         # print(count)
         return len(var), count
+
+    def returnInfo(self):
+        data = CSmineOthers(self.data).dataSplit()
+        data = CSmineOthers(data).removeBlankLines()
+        count_howmanyReturns = 0
+        for i in data:
+            i = i.replace('  ','')
+            
+            if 'return' in i:
+                returnInf = i.split(' ')
+                returnInf.remove('return')
+                count_howmanyReturns += 1
+
+        if count_howmanyReturns == 0:
+            return False, 0, 'NA', 'NA'
+        
+        else:
+            return True, count_howmanyReturns, len(returnInf),'NA'
 
 
 class CSminerJAVA(object):

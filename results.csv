@@ -1,2 +1,2 @@
-,method_id,cyclomatic_complexity,tloc,sloc_whbl,sloc_statements_wc,nloc_whbl,nloc,token_count,start_line,end_line,full_parameters,argDT,numArg,numLoops,numVariablesDeclared,numAritOper,numMethodsCalledreturn,returnType,ext,numMethodsCalled
-add_values.java,add_values.java,2,21,9,7,5,6,55,3,9,"['Integer [ ] a', ' Integer [ ] a', ' Integer [ ] a']","['array_Integer', 'array_Integer', 'array_Integer']",3,1,2,4,add_values.java,add_values.java,java,1.0
+,method_id,cyclomatic_complexity,tloc,sloc_whbl,sloc_statements_wc,nloc_whbl,nloc,token_count,start_line,end_line,full_parameters,argDT,numArg,numLoops,numVariablesDeclared,numAritOper,numMethodsCalledreturn,TotalVariablesReturned,returnType,ext,numMethodsCalled,return
+add_values.java,add_values.java,2,17,6,6,4,5,52,2,6,"['Integer [ ] a', ' Integer [ ] a', ' Integer [ ] a']","['array_Integer', 'array_Integer', 'array_Integer']",3,1,2,0,add_values.java,1,int ,java,1.0,True

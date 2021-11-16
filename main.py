@@ -28,7 +28,7 @@ def oneFile(input_file):
     except OSError:
         print('The file ' '"', input_file, '" does not exist!')
 
-def multipleFiles(input_file):
+def multipleFiles(input_file, resultsPath):
     inputPaths = gl.glob(input_file)
     checkPaths(inputPaths)
     for input in inputPaths:
@@ -36,14 +36,13 @@ def multipleFiles(input_file):
             CSminer_openFile(input).extFile()
             if CSminer_openFile(input).is_non_empty_file():
                 content = CSminer_openFile(input).readFile()
-                getMetrics(input, content)
+                getMetrics(input, content, resultsPath)
             else:
                 print('Empty file!')
         except OSError:
             print('The file ' '"', input, '" does not exist!')
 
-def getMetrics(input_file, data):
-    print(input_file)
+def getMetrics(input_file, data, resultPath):
 
     name = input_file.split('\\')[-1]
     
@@ -112,7 +111,7 @@ def getMetrics(input_file, data):
         updateDF(name, 'TotalVariablesReturned', TotalVariablesReturned)
         updateDF(name, 'returnType', returnType)      
    
-    saveDF('results1.csv')
+    saveDF(resultPath)
 
 def updateDF(method_id, metric_id, metric):
     global df_main
@@ -124,11 +123,12 @@ def updateDF(method_id, metric_id, metric):
         df_main.at[method_id] = method_id
         df_main.at[method_id, metric_id] = metric
     
-def saveDF(name):
+def saveDF(resultsPath):
+    resultsPath = resultsPath + '\\CSminerMetrics.csv'
     df_main.reset_index()
-    df_main.to_csv(name)
-    #print(df_main)
-    
+    df_main.to_csv(resultsPath)
+    print('*** Done *** \n')
+    print('* File saved in: * \n', resultsPath)    
 def createDF():
     global df_main
 
@@ -166,9 +166,9 @@ if __name__ == '__main__':
     @click.command()
     @click.option('-i', '--input', 'input_file', help = 'Path to the file')
     @click.option('-nf', '--numbFiles', 'nf', help= 'One file or multple files/directory options are "f" for one file and "d" for directoy')
-    @click.option('-o', '--output', 'output_file', help = 'Output file Name')
+    # @click.option('-o', '--output', 'output_file', help = 'Output file Name')
 
-    def main(input_file, nf, output_file):
+    def main(input_file, nf):
 
         global df_main
         
@@ -181,10 +181,10 @@ if __name__ == '__main__':
 
         if nf == 'f':
             data = oneFile(input_file)
-            getMetrics(input_file, data)
+            getMetrics(input_file, data, resultsPath)
             
         elif nf == 'd':
-            multipleFiles(input_file)     
+            multipleFiles(input_file, resultsPath)     
 
         else:
             print('Something is wrong, please verify the comand line!')

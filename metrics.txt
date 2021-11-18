@@ -37,10 +37,11 @@ METRIC FOR PROGRAMIG LANGUAGE
 
 - Number of external methods called -> CSminerGenericMetrics(data).numMethodCall()
 
+- Return info, return somenthing (True/False) -> CSminer(data).retunrInfo() 
+- Return info, how many return values -> CSminer(data).retunrInfo() 
+- Return info, return data type  -> CSminer(data).retunrInfo() 
 
-If for does not have space it likely give the wrong output the code :/ pero 
-
-- Check argType :( 
+- extension file
 
 python main.py -i C:\Users\duquet\Documents\GitHub\CSminer\SourceCodeExample\* -nf d -o asdf
 
